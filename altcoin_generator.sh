@@ -66,8 +66,8 @@ RUN echo "deb http://ppa.launchpad.net/bitcoin/bitcoin/ubuntu xenial main" >> /e
     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv D46F45428842CE5E && \
     apt-get update
 
-# Installa tutti i pacchetti necessari, compresi python3 e pip3
-RUN apt-get -y install \
+# # Installa tutti i pacchetti necessari, compresi python3 e pip3
+RUN apt-get update && apt-get -y install \
     ccache git \
     libboost-system1.58.0 libboost-filesystem1.58.0 libboost-program-options1.58.0 \
     libboost-thread1.58.0 libboost-chrono1.58.0 libssl1.0.0 libevent-pthreads-2.0-5 libevent-2.0-5 \
@@ -80,10 +80,8 @@ RUN apt-get -y install \
     libprotobuf-dev protobuf-compiler libqrencode-dev \
     python3 python3-pip
 
-# Aggiorna pip e installa i pacchetti Python corretti
-RUN pip3 install --upgrade pip && \
-    pip3 install construct==2.5.2 scrypt
-
+# Usa direttamente pip3 senza aggiornarlo per evitare problemi con Python 3.5
+RUN pip3 install construct==2.5.2 scrypt
 EOF
         fi 
         docker build --label $DOCKER_IMAGE_LABEL --tag $DOCKER_IMAGE_LABEL $DIRNAME/$DOCKER_IMAGE_LABEL/
